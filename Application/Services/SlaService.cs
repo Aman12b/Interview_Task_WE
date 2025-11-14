@@ -1,30 +1,36 @@
 ﻿using System;
-using DomainModel;
 using Application.Ports;
+using DomainModel;
 
 namespace Application.Services
 {
     public class SlaService
     {
-        private readonly ITimeProvider _time;
+        private readonly ITimeProvider _timeProvider;
+        private readonly SlaOptions _options;
 
-        public SlaService(ITimeProvider timeProvider)
+        public SlaService(ITimeProvider timeProvider, SlaOptions options)
         {
-            _time = timeProvider;
+            if (timeProvider == null) throw new ArgumentNullException("timeProvider");
+            if (options == null) throw new ArgumentNullException("options");
+
+            _timeProvider = timeProvider;
+            _options = options;
         }
 
-        /// <summary>
-        /// Berechnet die Deadline basierend auf SLA + evtl. Smart-Meter-Upgrade.
-        /// </summary>
         public DateTimeOffset CalculateDue(Customer customer, Request request, bool hasSmartMeterUpgrade)
         {
-            int baseHours = customer.Sla == SlaLevel.Premium ? 24 : 48;
-            if (hasSmartMeterUpgrade)
-            {
-                baseHours += 12;
-            }
+            int baseHours;
 
-            // Vereinfachung: RequestedAt ist bereits in "korrekter" lokaler Zeit
+            if (customer.Sla == SlaLevel.Premium)
+                baseHours = _options.PremiumHours;
+            else
+                baseHours = _options.StandardHours;
+
+            if (hasSmartMeterUpgrade)
+                baseHours += _options.SmartMeterUpgradeExtraHours;
+
+            // Referenz ist weiterhin RequestedAt
             return request.RequestedAt.AddHours(baseHours);
         }
     }

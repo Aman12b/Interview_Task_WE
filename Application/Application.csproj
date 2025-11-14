@@ -50,6 +50,7 @@
     <Compile Include="Ports\ITimeProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\IdempotencyService.cs" />
+    <Compile Include="Services\SlaOptions.cs" />
     <Compile Include="Services\SlaService.cs" />
     <Compile Include="UseCases\ProcessTariffSwitchRequestsUseCase.cs" />
   </ItemGroup>

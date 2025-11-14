@@ -1,7 +1,6 @@
 ﻿using Application.Ports;
 using Application.Services;
 using Application.UseCases;
-using DomainModel;
 using Infrastructure.Csv;
 using Infrastructure.Presentation;
 using Infrastructure.Stores;
@@ -13,7 +12,6 @@ namespace ConsoleApp
     {
         public static ProcessTariffSwitchRequestsUseCase BuildUseCase()
         {
-            // Pfade
             string basePath = AppDomain.CurrentDomain.BaseDirectory;
             string inputDir = Path.Combine(basePath, "InputFiles");
 
@@ -31,7 +29,14 @@ namespace ConsoleApp
             IOutput output = new ConsolePresenter();
             ITimeProvider timeProvider = new SystemTimeProviderVienna();
 
-            var slaService = new SlaService(timeProvider);
+            var slaOptions = new SlaOptions
+            {
+                StandardHours = 48,
+                PremiumHours = 24,
+                SmartMeterUpgradeExtraHours = 12
+            };
+
+            var slaService = new SlaService(timeProvider, slaOptions);
             var idemService = new IdempotencyService(ledger);
 
             var useCase = new ProcessTariffSwitchRequestsUseCase(
