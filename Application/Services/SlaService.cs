@@ -27,9 +27,7 @@ namespace Application.Services
             if (hasSmartMeterUpgrade)
                 baseHours += _options.SmartMeterUpgradeExtraHours;
 
-            var utc = request.RequestedAt.UtcDateTime.AddHours(baseHours);
-            return new DateTimeOffset(utc, TimeSpan.Zero)
-                .ToOffset(TimeZoneInfo.FindSystemTimeZoneById("Europe/Vienna").GetUtcOffset(utc));
+            return request.RequestedAt.AddHours(baseHours);
         }
     }
 }
