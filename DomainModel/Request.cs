@@ -21,16 +21,16 @@ namespace DomainModel
             RequestedAt = requestedAt;
         }
 
-        public PreliminaryDecision Decide(Customer customer, Tariff tariff)
+        public EvaluationResult Decide(Customer customer, Tariff tariff)
         {
             if (customer == null)
-                return PreliminaryDecision.Rejected("Customer not found");
+                return EvaluationResult.Rejected("Customer not found");
 
             if (tariff == null)
-                return PreliminaryDecision.Rejected("Tariff not found");
+                return EvaluationResult.Rejected("Tariff not found");
 
             if (customer.HasUnpaidInvoices)
-                return PreliminaryDecision.Rejected("Customer has unpaid invoices");
+                return EvaluationResult.Rejected("Customer has unpaid invoices");
 
             if (tariff.RequiresSmartMeter && customer.Meter == MeterType.Classic)
             {
@@ -41,10 +41,10 @@ namespace DomainModel
                     null
                 );
 
-                return PreliminaryDecision.ApprovedWithFollowUp(followUp);
+                return EvaluationResult.ApprovedWithFollowUp(followUp);
             }
 
-            return PreliminaryDecision.Approved();
+            return EvaluationResult.Approved();
         }
     }
 }

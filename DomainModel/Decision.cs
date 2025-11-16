@@ -17,11 +17,9 @@ namespace DomainModel
             SlaDueAt = slaDueAt;
         }
 
-        public Decision(DecisionKind kind, string reason, DateTimeOffset due)
+        public Decision WithDue(DateTimeOffset due)
         {
-            Kind = kind;
-            Reason = reason;
-            this.due = due;
+            return new Decision(this.Kind, this.Reason, due);
         }
 
         public static Decision Approved(DateTimeOffset? due)

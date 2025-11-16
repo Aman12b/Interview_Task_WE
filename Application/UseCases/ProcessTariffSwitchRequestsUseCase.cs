@@ -59,27 +59,23 @@ namespace Application.UseCases
                 Customer customer = _customers.GetById(req.CustomerId);
                 Tariff tariff = _tariffs.GetById(req.TargetTariffId);
 
-                PreliminaryDecision preliminary = req.Decide(customer, tariff);
-                bool hasUpgradeFollowUp = preliminary.FollowUps != null && preliminary.FollowUps.Count > 0;
+                EvaluationResult evaluationResult = req.Decide(customer, tariff);
+                bool hasUpgradeFollowUp = evaluationResult.FollowUps != null && evaluationResult.FollowUps.Count > 0;
 
                 // SLA berechnen
                 System.DateTimeOffset due = _slaService.CalculateDue(customer, req, hasUpgradeFollowUp);
 
                 // endgültige Decision mit SlaDueAt
-                Decision finalDecision = new Decision(
-                    preliminary.Decision.Kind,
-                    preliminary.Decision.Reason,
-                    due
-                );
+                Decision finalDecision = evaluationResult.Decision.WithDue(due);
 
-                if (preliminary.FollowUps != null && preliminary.FollowUps.Count > 0)
+                if (evaluationResult.FollowUps != null && evaluationResult.FollowUps.Count > 0)
                 {
                     // Due auf FollowUps setzen
-                    foreach (FollowUpAction action in preliminary.FollowUps)
+                    foreach (FollowUpAction action in evaluationResult.FollowUps)
                     {
                         action.SetDue(due);
                     }
-                    _followUps.SaveMany(preliminary.FollowUps);
+                    _followUps.SaveMany(evaluationResult.FollowUps);
                 }
 
                 // Idempotenz
@@ -90,7 +86,7 @@ namespace Application.UseCases
                 else if (finalDecision.Kind == DecisionKind.Rejected) rejected++;
                 else skipped++;
 
-                _output.WriteResult(req, finalDecision, preliminary.FollowUps);
+                _output.WriteResult(req, finalDecision, evaluationResult.FollowUps);
             }
 
             _output.WriteSummary(total, approved, rejected, skipped, skippedAlreadyProcessed);

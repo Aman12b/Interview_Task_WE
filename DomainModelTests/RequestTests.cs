@@ -16,7 +16,7 @@ namespace TariffSwitch.Tests.DomainModelTests
             #endregion
 
             #region Act
-            PreliminaryDecision result = request.Decide(null, tariff);
+            EvaluationResult result = request.Decide(null, tariff);
             #endregion
 
             #region Assert
@@ -34,7 +34,7 @@ namespace TariffSwitch.Tests.DomainModelTests
             #endregion
 
             #region Act
-            PreliminaryDecision result = request.Decide(customer, null);
+            EvaluationResult result = request.Decide(customer, null);
             #endregion
 
             #region Assert
@@ -53,7 +53,7 @@ namespace TariffSwitch.Tests.DomainModelTests
             #endregion
 
             #region Act
-            PreliminaryDecision result = request.Decide(customer, tariff);
+            EvaluationResult result = request.Decide(customer, tariff);
             #endregion
 
             #region Assert
@@ -72,7 +72,7 @@ namespace TariffSwitch.Tests.DomainModelTests
             #endregion
 
             #region Act
-            PreliminaryDecision result = request.Decide(customer, tariff);
+            EvaluationResult result = request.Decide(customer, tariff);
             #endregion
 
             #region Assert
@@ -96,7 +96,7 @@ namespace TariffSwitch.Tests.DomainModelTests
             #endregion
 
             #region Act
-            PreliminaryDecision result = request.Decide(customer, tariff);
+            EvaluationResult result = request.Decide(customer, tariff);
             #endregion
 
             #region Assert

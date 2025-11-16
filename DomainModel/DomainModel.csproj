@@ -46,7 +46,7 @@
     <Compile Include="Enums.cs" />
     <Compile Include="FollowUpAction.cs" />
     <Compile Include="Guard.cs" />
-    <Compile Include="PreliminaryDecision.cs" />
+    <Compile Include="EvaluationResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Request.cs" />
     <Compile Include="Tariff.cs" />
