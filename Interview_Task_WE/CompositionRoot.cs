@@ -4,7 +4,6 @@ using Application.UseCases;
 using Infrastructure.Csv;
 using Infrastructure.Presentation;
 using Infrastructure.Stores;
-using Infrastructure.Time;
 
 namespace ConsoleApp
 {
@@ -27,7 +26,6 @@ namespace ConsoleApp
             IProcessedLedgerStore ledger = new ProcessedLedgerStore(ledgerPath);
             IFollowUpActionStore followUps = new FollowUpActionCsvStore(followupsPath);
             IOutput output = new ConsolePresenter();
-            ITimeProvider timeProvider = new SystemTimeProviderVienna();
 
             var slaOptions = new SlaOptions
             {
@@ -36,7 +34,7 @@ namespace ConsoleApp
                 SmartMeterUpgradeExtraHours = 12
             };
 
-            var slaService = new SlaService(timeProvider, slaOptions);
+            var slaService = new SlaService(slaOptions);
             var idemService = new IdempotencyService(ledger);
 
             var useCase = new ProcessTariffSwitchRequestsUseCase(

@@ -49,7 +49,6 @@
     <Compile Include="Csv\TariffCsvRepository.cs" />
     <Compile Include="Stores\FollowUpActionCsvStore.cs" />
     <Compile Include="Stores\ProcessedLedgerStore.cs" />
-    <Compile Include="Time\SystemTimeProviderVienna.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Application\Application.csproj">

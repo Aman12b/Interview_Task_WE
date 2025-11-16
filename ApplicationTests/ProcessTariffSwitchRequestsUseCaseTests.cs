@@ -164,7 +164,7 @@ namespace TariffSwitch.Tests.ApplicationTests
             var ledger = new FakeLedgerStore();
             var followUps = new FakeFollowUpStore();
             var timeProvider = new FixedTimeProvider(baseTime);
-            var slaService = new SlaService(timeProvider, slaOptions);
+            var slaService = new SlaService(slaOptions);
             var idemService = new IdempotencyService(ledger);
             var output = new FakeOutput();
 
