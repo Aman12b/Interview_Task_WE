@@ -6,15 +6,12 @@ namespace Application.Services
 {
     public class SlaService
     {
-        private readonly ITimeProvider _timeProvider;
         private readonly SlaOptions _options;
 
-        public SlaService(ITimeProvider timeProvider, SlaOptions options)
+        public SlaService(SlaOptions options)
         {
-            if (timeProvider == null) throw new ArgumentNullException("timeProvider");
             if (options == null) throw new ArgumentNullException("options");
 
-            _timeProvider = timeProvider;
             _options = options;
         }
 
@@ -30,8 +27,9 @@ namespace Application.Services
             if (hasSmartMeterUpgrade)
                 baseHours += _options.SmartMeterUpgradeExtraHours;
 
-            // Referenz ist weiterhin RequestedAt
-            return request.RequestedAt.AddHours(baseHours);
+            var utc = request.RequestedAt.UtcDateTime.AddHours(baseHours);
+            return new DateTimeOffset(utc, TimeSpan.Zero)
+                .ToOffset(TimeZoneInfo.FindSystemTimeZoneById("Europe/Vienna").GetUtcOffset(utc));
         }
     }
 }
