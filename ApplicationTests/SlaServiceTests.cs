@@ -31,9 +31,16 @@ namespace TariffSwitch.Tests.ApplicationTests
         public void CalculateDue_Standard_NoUpgrade_Adds48Hours()
         {
             #region Arrange
+            var slaOptions = new SlaOptions
+            {
+                StandardHours = 48,
+                PremiumHours = 24,
+                SmartMeterUpgradeExtraHours = 12
+            };
+
             var baseTime = new DateTimeOffset(2025, 1, 1, 8, 0, 0, TimeSpan.Zero);
             var timeProvider = new FakeTimeProvider(baseTime);
-            var slaService = new SlaService(timeProvider);
+            var slaService = new SlaService(timeProvider, slaOptions);
 
             var customer = new Customer("C1", "Alice", false, SlaLevel.Standard, MeterType.Smart);
             var request = new Request("R1", "C1", "T1", baseTime);
@@ -52,9 +59,16 @@ namespace TariffSwitch.Tests.ApplicationTests
         public void CalculateDue_Premium_NoUpgrade_Adds24Hours()
         {
             #region Arrange
+            var slaOptions = new SlaOptions
+            {
+                StandardHours = 48,
+                PremiumHours = 24,
+                SmartMeterUpgradeExtraHours = 12
+            };
+
             var baseTime = new DateTimeOffset(2025, 1, 1, 8, 0, 0, TimeSpan.Zero);
             var timeProvider = new FakeTimeProvider(baseTime);
-            var slaService = new SlaService(timeProvider);
+            var slaService = new SlaService(timeProvider, slaOptions);
 
             var customer = new Customer("C1", "Alice", false, SlaLevel.Premium, MeterType.Smart);
             var request = new Request("R1", "C1", "T1", baseTime);
@@ -73,9 +87,16 @@ namespace TariffSwitch.Tests.ApplicationTests
         public void CalculateDue_Standard_WithUpgrade_Adds48Plus12Hours()
         {
             #region Arrange
+            var slaOptions = new SlaOptions
+            {
+                StandardHours = 48,
+                PremiumHours = 24,
+                SmartMeterUpgradeExtraHours = 12
+            };
+
             var baseTime = new DateTimeOffset(2025, 1, 1, 8, 0, 0, TimeSpan.Zero);
             var timeProvider = new FakeTimeProvider(baseTime);
-            var slaService = new SlaService(timeProvider);
+            var slaService = new SlaService(timeProvider, slaOptions);
 
             var customer = new Customer("C1", "Alice", false, SlaLevel.Standard, MeterType.Classic);
             var request = new Request("R1", "C1", "T1", baseTime);

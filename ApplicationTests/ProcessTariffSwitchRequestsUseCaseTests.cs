@@ -151,6 +151,12 @@ namespace TariffSwitch.Tests.ApplicationTests
                 new Request("R1", "C1", "T_SMART", baseTime),
                 new Request("R2", "C2", "T_REG",   baseTime)
             };
+            var slaOptions = new SlaOptions
+            {
+                StandardHours = 48,
+                PremiumHours = 24,
+                SmartMeterUpgradeExtraHours = 12
+            };
 
             var customerRepo = new FakeCustomerRepo(customers);
             var tariffRepo = new FakeTariffRepo(tariffs);
@@ -158,7 +164,7 @@ namespace TariffSwitch.Tests.ApplicationTests
             var ledger = new FakeLedgerStore();
             var followUps = new FakeFollowUpStore();
             var timeProvider = new FixedTimeProvider(baseTime);
-            var slaService = new SlaService(timeProvider);
+            var slaService = new SlaService(timeProvider, slaOptions);
             var idemService = new IdempotencyService(ledger);
             var output = new FakeOutput();
 
